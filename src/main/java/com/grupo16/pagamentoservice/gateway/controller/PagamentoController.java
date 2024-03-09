@@ -1,5 +1,9 @@
 package com.grupo16.pagamentoservice.gateway.controller;
 
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import com.grupo16.pagamentoservice.domain.Carrinho;
 import com.grupo16.pagamentoservice.domain.Pagamento;
 import com.grupo16.pagamentoservice.gateway.controller.json.PagamentoJson;
@@ -12,13 +16,16 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @AllArgsConstructor
+@RequestMapping("pagamentos")
 public class PagamentoController {
 
 	private CriarPagamentoUsecase criarPagamentoUsecase;
 	
 	private ProcessarPagamentoUsecase processarPagamentoUsecase;
 	
-	public void criar(PagamentoJson requestBody) {
+	
+	@PostMapping()
+	public void criar(@RequestBody PagamentoJson requestBody) {
 		log.trace("Start requestBody={}", requestBody);
 		
 		Pagamento pagamento = Pagamento.builder()
@@ -31,7 +38,8 @@ public class PagamentoController {
 		log.trace("End pagamentoId={}", pagamentoId);
 	}
 	
-	public void processar(ProcessarPagamentoJson requestBody) {
+	@PostMapping("processar")
+	public void processar(@RequestBody ProcessarPagamentoJson requestBody) {
 		log.trace("Start requestBody={}", requestBody);
 		processarPagamentoUsecase.processar(requestBody.getPagamentoExternoId());
 		log.trace("End");
