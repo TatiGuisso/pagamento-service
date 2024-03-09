@@ -11,4 +11,9 @@ public class Pagamento {
 	private Carrinho carrinho;
 	private String pagamentoExternoId;
 	private StatusPagamento status;
+	
+	public void criar(String pagamentoExternoId) {
+		status = StatusPagamento.AGUARDANDO_PAGAMENTO;
+		this.pagamentoExternoId = pagamentoExternoId;
+	}
 }

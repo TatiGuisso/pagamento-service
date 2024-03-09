@@ -20,18 +20,18 @@ import lombok.extern.slf4j.Slf4j;
 public class PagamentoMySqlGateway implements PagamentoRepositoryGateway {
 
 	private PagamentoRepository pagamentoRepository;
-	
+
 	@Override
 	public Pagamento obtemPorPagamentoExternoId(String pagamentoExternoId) {
 		try {
-			
+
 			Optional<PagamentoEntity> pagamentoOp = pagamentoRepository.findByPagamentoExternoId(pagamentoExternoId);
-			
+
 			if(pagamentoOp.isPresent()) {
 				PagamentoEntity pagamentoEntity = pagamentoOp.get();
-				
+
 				StatusPagamento[] statusList = StatusPagamento.values();
-				
+
 				return Pagamento.builder()
 						.id(pagamentoEntity.getId())
 						.idPedido(pagamentoEntity.getPedidoId())
@@ -40,7 +40,7 @@ public class PagamentoMySqlGateway implements PagamentoRepositoryGateway {
 						.status(statusList[pagamentoEntity.getStatus().intValue()])
 						.build();
 			}
-			
+
 			throw new PagamentoNaoEncontradoException();
 		} catch (PagamentoNaoEncontradoException e) {
 			log.warn("Pagamento não encontrado. pagamentoExternoId={}", pagamentoExternoId);
@@ -54,15 +54,15 @@ public class PagamentoMySqlGateway implements PagamentoRepositoryGateway {
 	@Override
 	public void atualizarStatus(Pagamento pagamento) {
 		try {
-			
+
 			Optional<PagamentoEntity> pagamentoOp = pagamentoRepository.findById(pagamento.getId());
-			
+
 			if(pagamentoOp.isPresent()) {
 				PagamentoEntity pagamentoEntity = pagamentoOp.get();
 				pagamentoEntity.setStatus((long) pagamento.getStatus().ordinal());
 				pagamentoRepository.save(pagamentoEntity);
 			}
-			
+
 			throw new PagamentoNaoEncontradoException();
 		} catch (PagamentoNaoEncontradoException e) {
 			log.warn("Pagamento não encontrado. pagamentoId={}", pagamento.getId());
@@ -72,6 +72,27 @@ public class PagamentoMySqlGateway implements PagamentoRepositoryGateway {
 			throw new ErroAoAcessarBancoDeDadosException();
 		}
 
+	}
+
+	@Override
+	public Long criar(Pagamento pagamento) {
+		try {
+
+			PagamentoEntity pagamentoEntity = PagamentoEntity.builder()
+					.carrinhoId(pagamento.getCarrinho().getId())
+					.pedidoId(pagamento.getIdPedido())
+					.status((long) pagamento.getStatus().ordinal())
+					.pagamentoExternoId(pagamento.getPagamentoExternoId())
+					.build();
+
+			pagamentoRepository.save(pagamentoEntity);
+
+			return pagamentoEntity.getId();
+
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new ErroAoAcessarBancoDeDadosException();
+		}
 	}
 
 }

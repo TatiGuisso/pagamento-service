@@ -8,4 +8,6 @@ public interface PagamentoRepositoryGateway {
 
 	void atualizarStatus(Pagamento pagamento);
 
+	Long criar(Pagamento pagamento);
+
 }
