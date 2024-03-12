@@ -59,13 +59,14 @@ public class PagamentoMySqlGateway implements PagamentoRepositoryGateway {
 
 			Optional<PagamentoEntity> pagamentoOp = pagamentoRepository.findById(pagamento.getId());
 
-			if(pagamentoOp.isPresent()) {
-				PagamentoEntity pagamentoEntity = pagamentoOp.get();
-				pagamentoEntity.setStatus((long) pagamento.getStatus().ordinal());
-				pagamentoRepository.save(pagamentoEntity);
+			if(pagamentoOp.isEmpty()) {
+				throw new PagamentoNaoEncontradoException();
 			}
+			
+			PagamentoEntity pagamentoEntity = pagamentoOp.get();
+			pagamentoEntity.setStatus((long) pagamento.getStatus().ordinal());
+			pagamentoRepository.save(pagamentoEntity);
 
-			throw new PagamentoNaoEncontradoException();
 		} catch (PagamentoNaoEncontradoException e) {
 			log.warn("Pagamento não encontrado. pagamentoId={}", pagamento.getId());
 			throw e;

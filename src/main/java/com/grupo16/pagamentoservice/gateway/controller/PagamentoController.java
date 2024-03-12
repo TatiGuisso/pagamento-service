@@ -31,7 +31,7 @@ public class PagamentoController {
 		log.trace("Start requestBody={}", requestBody);
 		
 		Pagamento pagamento = Pagamento.builder()
-				.idPedido(requestBody.getId())
+				.idPedido(requestBody.getPedidoId())
 				.carrinho(Carrinho.builder().id(requestBody.getCarrinhoId()).build())
 				.build();
 		
