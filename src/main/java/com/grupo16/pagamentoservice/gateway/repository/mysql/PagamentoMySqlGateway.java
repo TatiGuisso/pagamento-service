@@ -13,10 +13,12 @@ import com.grupo16.pagamentoservice.gateway.PagamentoRepositoryGateway;
 import com.grupo16.pagamentoservice.gateway.repository.jpa.entity.PagamentoEntity;
 import com.grupo16.pagamentoservice.gateway.repository.jpa.springdata.PagamentoRepository;
 
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
+@AllArgsConstructor
 public class PagamentoMySqlGateway implements PagamentoRepositoryGateway {
 
 	private PagamentoRepository pagamentoRepository;
