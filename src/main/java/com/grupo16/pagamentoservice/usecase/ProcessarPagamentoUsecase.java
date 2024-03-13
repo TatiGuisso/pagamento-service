@@ -36,12 +36,14 @@ public class ProcessarPagamentoUsecase {
 		
 	}
 	
+	//TODO: deve criar os fallbacks
 	private void sagaPagamentoComSucesso(Pagamento pagamento, Carrinho carrinho) {
 		estoqueServiceGateway.efetuarBaixa(carrinho.getProdutos());
 		pedidoServiceGateway.efetuarFechamento(pagamento.getIdPedido());
 		pagamentoRepositoryGateway.atualizarStatus(Pagamento.builder().id(pagamento.getId()).status(StatusPagamento.PAGO).build());
 	}
 
+	//TODO: deve criar os fallbacks
 	private void sagaPagamentoInsucesso(Pagamento pagamento, Carrinho carrinho) {
 		estoqueServiceGateway.cancelarReserva(carrinho.getProdutos());
 		pedidoServiceGateway.efetuarCancelamento(pagamento.getIdPedido());
