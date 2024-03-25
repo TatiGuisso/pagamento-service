@@ -114,7 +114,4 @@ curl --location 'http://localhost:9999/pagamentos/processar' \
 
 ### Ilustração do MS Pagamento Service
 
-![](https://github.com/TatiGuisso/pagamento-service/blob/feature/fase5/src/main/java/document/pagamento-service.png)
-
-
-
+![pagamento-service.png](src%2Fmain%2Fjava%2Fdocument%2Fpagamento-service.png)
